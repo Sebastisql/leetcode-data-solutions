@@ -1,29 +1,14 @@
-# leetcode-data-solutions
-Zbiór zoptymalizowanych rozwiązań zadań z zakresu inżynierii danych i analizy z platformy LeetCode, napisanych w PostgreSQL oraz Pandas.
-# 📊 Course Completion Transitions Analysis
+# 📊 LeetCode Data Solutions
 
-This repository contains highly optimized solutions to a complex data engineering/analytics problem from LeetCode. The solutions are implemented in both **PostgreSQL** and **Python (Pandas)**, demonstrating cross-technology proficiency.
+Zbiór zoptymalizowanych rozwiązań zadań z zakresu inżynierii danych i analizy z platformy LeetCode. 
+Skupiam się tutaj na pisaniu czystego kodu (Clean Code), optymalizacji zapytań oraz wykorzystaniu zaawansowanych technik architektonicznych (CTE, Method Chaining).
 
-## 🎯 The Challenge
-The task was to analyze skill mastery pathways by tracking the sequence of courses completed by top-performing students. 
-* **Criteria for top performers:** Completed at least 5 courses with an average rating of 4.0 or higher.
-* **Goal:** Identify and count the frequencies of all consecutive course pairs (Course A → Course B) taken by these top students, ranked by popularity.
+## 🚀 Rozwiązane zadania
 
-## 💡 Solution Highlights & Optimizations
+| Projekt | Technologie | Krótki opis |
+| :--- | :--- | :--- |
+| [Course Completion Transitions](./course_transitions) | `PostgreSQL`, `Pandas` | Analiza ścieżek kursów, Early Filtering i optymalizacja Window Functions. |
+| [Golden Hour Customers](./golden_hour_customers) | `PostgreSQL` | Identyfikacja kluczowych klientów z użyciem kaskadowych CTE i agregacji warunkowych. |
 
-Instead of brute-forcing the problem, these solutions focus on **Early Filtering** and **Performance Optimization**—critical skills for working with Big Data.
-
-### 🐘 PostgreSQL Implementation (`course_transitions.sql`)
-* **Early Filtering:** Utilized a Semi-Join/CTE approach to identify top students *before* applying expensive Window Functions.
-* **Avoided Global Sorting:** Prevented the database from executing heavy `ORDER BY` and `LEAD()` operations on the entire dataset, restricting these calculations strictly to the pre-filtered subset of top performers.
-* **Clean Code:** Structured with clear Common Table Expressions (CTEs) for maintainability and readability.
-
-### 🐼 Python / Pandas Implementation (`course_transitions.py`)
-* **Method Chaining:** Code is written as a single, clean pipeline using standard Pandas method chaining (no unnecessary intermediate variables or memory leaks).
-* **Defensive Programming:** Implemented `.merge(..., validate='one_to_many')` to prevent accidental Cartesian explosions during data joins.
-* **Efficient Memory Usage:** Used `as_index=False` and optimized column selection using `.loc` instead of `.filter()` to ensure strict error handling (fail-fast architecture).
-* **Dynamic Sorting:** Applied intelligent lambda functions within the `sort_values` key parameter to handle case-insensitive sorting across mixed data types efficiently.
-
-## 📁 Files in this Repository
-* `course_transitions.sql` - The optimized PostgreSQL query.
-* `course_transitions.py` - The production-ready Pandas data pipeline.
+---
+*Repozytorium jest na bieżąco aktualizowane w miarę rozwiązywania kolejnych problemów.*
