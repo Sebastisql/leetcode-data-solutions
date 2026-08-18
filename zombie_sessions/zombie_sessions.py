@@ -11,7 +11,7 @@ def find_zombie_sessions(app_events: pd.DataFrame) -> pd.DataFrame:
             scroll_mask=lambda x: x['event_type'].eq('scroll'),
             click_mask=lambda x: x['event_type'].eq('click'),
         )
-        .groupby(['user_id', 'session_id'], as_index=False, sort=False) #czy kolejność grupowania w tym przyapdku ma znaczenie, jeśli nie korzystam z indeksów?
+        .groupby(['user_id', 'session_id'], as_index=False, sort=False) 
         .agg(
             scroll_count=('scroll_mask', 'sum'),
             click_count=('click_mask', 'sum'),
