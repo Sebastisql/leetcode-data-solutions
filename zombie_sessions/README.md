@@ -1,22 +1,18 @@
 # 🧟 Find Zombie Sessions
 
 ## Cel zadania
-Identyfikacja tzw. "zombie sessions" – sesji użytkowników w aplikacji, które wykazują nienaturalne wzorce zachowań. Aby sesja została uznana za anomalię, musi spełniać rygorystyczne kryteria biznesowe (czas trwania, liczba scrolli, współczynnik kliknięć do scrolli oraz brak zakupów).
+Identyfikacja tzw. "zombie sessions" – sesji użytkowników wykazujących nienaturalne wzorce zachowań. Aby sesja została uznana za anomalię, musi spełniać rygorystyczne kryteria biznesowe: odpowiedni czas trwania, minimalna liczba scrolli, niski współczynnik kliknięć do scrolli oraz całkowity brak zakupów. 
 
-## Przemyślenia architektoniczne i optymalizacja
+Rozwiązanie zostało zaimplementowane w dwóch technologiach, z naciskiem na optymalizację pod duże zbiory danych (Big Data) i czystość kodu (**Clean Code**).
 
-To rozwiązanie zostało zaprojektowane z myślą o czystości kodu (**Clean Code**) i przewidywaniu skrajnych przypadków (**Defensive Programming**).
+## 🐘 Rozwiązanie w PostgreSQL
+* **Defensywne programowanie:** Ponieważ SQL nie gwarantuje kolejności wykonywania warunków (brak *short-circuitingu* w klauzuli `WHERE`), użyto `NULLIF(scroll_count, 0)`. Całkowicie chroni to kod przed błędem `Division by zero`.
+* **Praca z przedziałami czasowymi:** Bezpieczna konwersja kłopotliwego typu `INTERVAL` na uniwersalne liczby zmiennoprzecinkowe przy użyciu `EXTRACT(EPOCH FROM ...)`.
+* **Funkcja FILTER:** Wykorzystanie `COUNT(*) FILTER (WHERE ...)` zamiast przestarzałego `SUM(CASE WHEN...)` dla maksymalnej czytelności.
+* **Architektura CTE:** Rozbicie logiki na logiczne potoki (pipelines), ułatwiające debugowanie i testowanie.
 
-### 1. Defensywne programowanie i podział na CTE
-Logika została celowo podzielona na dwa kroki za pomocą CTE (Common Table Expressions):
-1. Zebranie surowych statystyk i flag (`bool_or`).
-2. Wyliczenie metryk biznesowych.
-
-W SQL silnik bazy danych nie gwarantuje kolejności sprawdzania warunków (brak mechanizmu *short-circuiting* w klauzuli `WHERE`). Dlatego do wyliczenia `click_to_scroll_ratio` zastosowano zabezpieczenie w postaci **`NULLIF(scroll_count, 0)`**. Chroni to całkowicie kod przed błędem `Division by zero` w sytuacji, gdy użytkownik przeklikał sesję bez żadnego scrollowania.
-
-### 2. Praca z przedziałami czasowymi w PostgreSQL
-Odejmowanie dat (`TIMESTAMP`) w PostgreSQL zwraca typ `INTERVAL`. Jest on wygodny do czytania, ale problematyczny w dalszej obróbce i rzutowaniu w środowiskach zewnętrznych (np. w warstwie aplikacji lub w formacie JSON). 
-W rozwiązaniu wykorzystano funkcję **`EXTRACT(EPOCH FROM ...)`**, która w bezpieczny i optymalny sposób transformuje `INTERVAL` na liczbę sekund (`double precision`), pozwalając na łatwe wyliczenie czasu w minutach matematycznym dzieleniem.
-
-### 3. Zastosowanie funkcji FILTER
-Zamiast tradycyjnego, przestarzałego i trudnego w czytaniu zapisu `SUM(CASE WHEN...)`, wykorzystano natywną dla PostgreSQL (od wersji 9.4) klauzulę **`FILTER (WHERE ...)`** wewnątrz funkcji agregujących, co znacznie poprawia czytelność kodu i ułatwia wprowadzanie kolejnych warunków biznesowych.
+## 🐍 Rozwiązanie w Pandas
+Zastosowano nowoczesną konwencję **Method Chaining** – funkcyjny styl pisania bez tworzenia zbędnych zmiennych pośrednich.
+* **Early Filtering (Anti-Join):** Sesje z zakupami zostały odfiltrowane (`query("session_id not in...")`) jeszcze przed kosztowną operacją `groupby`. W środowisku Big Data drastycznie oszczędza to pamięć RAM.
+* **Defensywne dzielenie z automatu:** Filtracja wierszy (`scroll_count >= 5`) następuje krok przed blokiem `.assign()`, który liczy wskaźnik konwersji. Dzięki temu naturalnie zapobiegamy błędom matematycznym bez używania `try-except`.
+* **Wydajność:** Zastosowano wektoryzowane operacje na datach (`.dt.total_seconds()`) oraz wyłączono domyślne sortowanie podczas grupowania (`sort=False`), odciążając procesor.
