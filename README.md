@@ -8,7 +8,7 @@ Skupiam się tutaj na pisaniu czystego kodu (Clean Code), optymalizacji zapytań
 | Projekt | Technologie | Krótki opis |
 | :--- | :--- | :--- |
 | [Course Completion Transitions](./course_transitions) | `PostgreSQL`, `Pandas` | Analiza ścieżek kursów, Early Filtering i optymalizacja Window Functions. |
-| [Golden Hour Customers](./golden_hour_customers) | `PostgreSQL` | Identyfikacja kluczowych klientów z użyciem kaskadowych CTE i agregacji warunkowych. |
+| [Golden Hour Customers](./golden_hour_customers) | `PostgreSQL`, `Pandas` | Identyfikacja kluczowych klientów z użyciem kaskadowych CTE i agregacji warunkowych. |
 
 ---
 *Repozytorium jest na bieżąco aktualizowane w miarę rozwiązywania kolejnych problemów.*
