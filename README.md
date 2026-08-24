@@ -11,5 +11,6 @@ Skupiam się tutaj na pisaniu czystego kodu (Clean Code), optymalizacji zapytań
 | [Golden Hour Customers](./golden_hour_customers) | `PostgreSQL`, `Pandas` | Identyfikacja kluczowych klientów z użyciem kaskadowych CTE i agregacji warunkowych. |
 | [Find Zombie Sessions](./zombie_sessions) | `PostgreSQL`, `Pandas` | Detekcja anomalii i filtrowanie z użyciem agregacji. Defensywne programowanie (`NULLIF`) oraz manipulacja interwałami czasowymi. |
 | [Find Loyal Customers](./loyal_customers) | `PostgreSQL`, `Pandas` | Identyfikacja lojalnych klientów. Zastosowanie podejścia limitowego (zamiast wskaźnikowego) do omijania dzielenia przez zero, klauzula `FILTER` oraz precyzyjne łańcuchowanie (Method Chaining). |
+| [Stores with Inventory Imbalance](./stores_with_inventory_imbalance) | `PostgreSQL`, `Pandas` | Rozwiązanie problemu Greatest-N-per-Group. Eliminacja Self-Joinów przez zastosowanie funkcji okna (Single Scan, custom Window Frames). W Pandas użyto wczesnego filtrowania (`transform`) i bezpośredniej agregacji skrajnych wartości. |
 ---
 *Repozytorium jest na bieżąco aktualizowane w miarę rozwiązywania kolejnych problemów.*
