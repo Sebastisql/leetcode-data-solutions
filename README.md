@@ -17,6 +17,7 @@ Skupiam się tutaj na pisaniu czystego kodu (Clean Code), optymalizacji zapytań
 | [Find Overbooked Employees](./find_overbooked_employees) | `PostgreSQL`, `Pandas` | Identyfikacja przeciążonych pracowników. Optymalizacja zapytań wzorcem "Aggregate Early, Join Late" (zagnieżdżone CTE). W Pandas zastosowano `pd.Grouper` z precyzyjnym domykaniem przedziałów czasowych (`closed='left'`) do wyeliminowania "problemu północy". |
 | [DNA Pattern Recognition](./dna_pattern_recognition) | `PostgreSQL`, `Pandas` | Ekstrakcja cech z ciągów tekstowych. W SQL wykorzystano wzorce `LIKE ANY (ARRAY[...])` i `CASE WHEN`, a w Pandas postawiono na wektoryzację (`.str`) z wyłączonym silnikiem regex dla lepszej wydajności. |
 | [Trips and Users](./trips_and_users) | `PostgreSQL`, `Pandas` | Obliczanie wskaźnika anulowań (Cancellation Rate) z filtrowaniem relacyjnym. W SQL użyto `EXISTS` (Semi-Join) do walidacji statusów oraz natywnej klauzuli `FILTER`. W Pandas zastosowano wektoryzowane filtrowanie (`.isin`) w pełnym łańcuchu metod (Method Chaining) oraz zoptymalizowano wyliczenie proporcji wykorzystując funkcję `.mean()` bezpośrednio na masce logicznej. |
+| [Department Top Three Salaries](./department_top_three_salaries) | `PostgreSQL`, `Pandas` | Identyfikacja najlepiej zarabiających pracowników. W SQL wykorzystano `DENSE_RANK()`. W Pandas zastosowano pełny Method Chaining z wczesnym odcinaniem kolumn (Early Projection) i rygorystycznym przygotowaniem tabel przed złączeniem. |
 
 ---
 *Repozytorium jest na bieżąco aktualizowane w miarę rozwiązywania kolejnych problemów.*
